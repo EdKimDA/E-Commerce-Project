@@ -38,7 +38,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             KimEduardDuplicateEmailException.class,
-            KimEduardDuplicateUsernameException.class
+            KimEduardDuplicateUsernameException.class,
+            KimEduardDuplicateTransactionException.class
     })
     public ResponseEntity<KimEduardErrorResponseDTO> handleConflict(RuntimeException ex, HttpServletRequest request) {
         log.warn("Conflict error: {}", ex.getMessage());
