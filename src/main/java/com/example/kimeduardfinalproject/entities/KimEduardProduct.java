@@ -15,7 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "products")
-public class Product {
+public class KimEduardProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -47,7 +47,7 @@ public class Product {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<CartItem> cartItems = new ArrayList<>();
+    private List<KimEduardCartItem> cartItems = new ArrayList<>();
 
 
     @PrePersist

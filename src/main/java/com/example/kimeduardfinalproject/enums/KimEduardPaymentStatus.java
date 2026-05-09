@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.enums;
 
-public enum PaymentStatus {
+public enum KimEduardPaymentStatus {
     PENDING,
     SUCCESS,
     FAILED

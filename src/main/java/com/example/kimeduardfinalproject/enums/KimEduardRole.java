@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.enums;
 
-public enum Role {
+public enum KimEduardRole {
     USER,
     ADMIN
 }

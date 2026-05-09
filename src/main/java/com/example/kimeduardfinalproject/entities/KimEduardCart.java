@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "carts")
-public class Cart {
+public class KimEduardCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -22,10 +22,10 @@ public class Cart {
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    private KimEduardUser user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
+    private List<KimEduardCartItem> items = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

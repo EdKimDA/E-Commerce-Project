@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.enums;
 
-public enum OrderStatus {
+public enum KimEduardOrderStatus {
     CREATED,
     PAID,
     CANCELLED,

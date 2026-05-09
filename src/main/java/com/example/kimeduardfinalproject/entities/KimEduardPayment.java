@@ -1,8 +1,8 @@
 package com.example.kimeduardfinalproject.entities;
 
 
-import com.example.kimeduardfinalproject.enums.PaymentStatus;
-import com.example.kimeduardfinalproject.enums.PaymentType;
+import com.example.kimeduardfinalproject.enums.KimEduardPaymentStatus;
+import com.example.kimeduardfinalproject.enums.KimEduardPaymentType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "payments")
-public class Payment {
+public class KimEduardPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +27,12 @@ public class Payment {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private KimEduardUser user;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private KimEduardOrder order;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than 0")
     @Column(nullable = false, precision = 12, scale = 2)
@@ -40,11 +40,11 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private PaymentType type;
+    private KimEduardPaymentType type;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private PaymentStatus status = PaymentStatus.PENDING;
+    private KimEduardPaymentStatus status = KimEduardPaymentStatus.PENDING;
 
     @Column(length = 1000)
     private String description;
@@ -60,7 +60,7 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
 
         if (this.status == null) {
-            this.status = PaymentStatus.PENDING;
+            this.status = KimEduardPaymentStatus.PENDING;
         }
     }
 }

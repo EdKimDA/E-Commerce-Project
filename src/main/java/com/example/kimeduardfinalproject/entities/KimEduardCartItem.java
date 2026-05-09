@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "cart_items", uniqueConstraints = @UniqueConstraint(columnNames = {"cart_id", "product_id"}))
-public class CartItem {
+public class KimEduardCartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -20,11 +20,11 @@ public class CartItem {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    private KimEduardCart cart;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private KimEduardProduct product;
 
     @Min(value = 1, message = "Quantity must be at least 1")
     @Column(nullable = false)

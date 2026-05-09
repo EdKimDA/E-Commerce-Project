@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.entities;
 
-import com.example.kimeduardfinalproject.enums.Role;
+import com.example.kimeduardfinalproject.enums.KimEduardRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -15,7 +15,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "username"}))
-public class User {
+public class KimEduardUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private Role role = Role.USER;
+    private KimEduardRole role = KimEduardRole.USER;
 
     @Column(nullable = false)
     private Boolean active = true;
@@ -49,15 +49,15 @@ public class User {
     private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Cart cart;
+    private KimEduardCart cart;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private List<Order> orders = new ArrayList<>();
+    private List<KimEduardOrder> orders = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private List<Payment> payments = new ArrayList<>();
+    private List<KimEduardPayment> payments = new ArrayList<>();
 
 
     @PrePersist
@@ -65,7 +65,7 @@ public class User {
         this.createdAt = LocalDateTime.now();
 
         if (this.role == null) {
-            this.role = Role.USER;
+            this.role = KimEduardRole.USER;
         }
 
         if (this.active == null) {

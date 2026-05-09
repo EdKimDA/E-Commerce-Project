@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "order_items")
-public class OrderItem {
+public class KimEduardOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -23,7 +23,7 @@ public class OrderItem {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    private KimEduardOrder order;
 
     @Column(nullable = false)
     private Long productId;

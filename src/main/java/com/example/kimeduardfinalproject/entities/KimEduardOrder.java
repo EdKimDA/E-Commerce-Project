@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.entities;
 
-import com.example.kimeduardfinalproject.enums.OrderStatus;
+import com.example.kimeduardfinalproject.enums.KimEduardOrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -16,7 +16,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
-public class Order {
+public class KimEduardOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -25,18 +25,18 @@ public class Order {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private KimEduardUser user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private OrderStatus status = OrderStatus.CREATED;
+    private KimEduardOrderStatus status = KimEduardOrderStatus.CREATED;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Total amount must be greater than 0")
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> items = new ArrayList<>();
+    private List<KimEduardOrderItem> items = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -46,7 +46,7 @@ public class Order {
         this.createdAt = LocalDateTime.now();
 
         if (this.status == null) {
-            this.status = OrderStatus.CREATED;
+            this.status = KimEduardOrderStatus.CREATED;
         }
     }
 }

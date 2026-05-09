@@ -1,6 +1,6 @@
 package com.example.kimeduardfinalproject.enums;
 
-public enum PaymentType {
+public enum KimEduardPaymentType {
     TOP_UP,
     ORDER_PAYMENT,
     REFUND
