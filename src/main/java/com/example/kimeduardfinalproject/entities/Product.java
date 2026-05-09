@@ -45,6 +45,11 @@ public class Product {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<CartItem> cartItems = new ArrayList<>();
+
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
