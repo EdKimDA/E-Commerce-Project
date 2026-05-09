@@ -53,5 +53,17 @@ public class Product {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+
+        if (this.active == null) {
+            this.active = true;
+        }
+
+        if (this.deleted == null) {
+            this.deleted = false;
+        }
+
+        if (this.stockQuantity == null) {
+            this.stockQuantity = 0;
+        }
     }
 }
