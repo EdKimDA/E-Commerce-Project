@@ -2,12 +2,17 @@ package com.example.kimeduardfinalproject.services;
 
 
 import com.example.kimeduardfinalproject.dto.requests.KimEduardProductRequestDTO;
+import com.example.kimeduardfinalproject.dto.responses.KimEduardPageResponseDTO;
 import com.example.kimeduardfinalproject.dto.responses.KimEduardProductResponseDTO;
 import com.example.kimeduardfinalproject.entities.KimEduardProduct;
 import com.example.kimeduardfinalproject.exceptions.KimEduardProductNotFoundException;
 import com.example.kimeduardfinalproject.mappers.KimEduardProductMapper;
 import com.example.kimeduardfinalproject.repositories.KimEduardProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,11 +42,34 @@ public class KimEduardProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<KimEduardProductResponseDTO> getAllVisible() {
-        return productRepository.findByActiveTrueAndDeletedFalse()
+    public KimEduardPageResponseDTO<KimEduardProductResponseDTO> getAllVisible(
+            int page,
+            int size,
+            String sortBy,
+            String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<KimEduardProduct> productPage = productRepository.findByActiveTrueAndDeletedFalse(pageable);
+
+        List<KimEduardProductResponseDTO> content = productPage.getContent()
                 .stream()
                 .map(productMapper::toResponse)
                 .toList();
+
+        return new KimEduardPageResponseDTO<>(
+                content,
+                productPage.getNumber(),
+                productPage.getSize(),
+                productPage.getTotalElements(),
+                productPage.getTotalPages(),
+                productPage.isFirst(),
+                productPage.isLast()
+        );
     }
 
     @Transactional(readOnly = true)

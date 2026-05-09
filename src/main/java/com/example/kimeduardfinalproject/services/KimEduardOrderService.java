@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class KimEduardOrderService {
-
+    private final KimEduardEmailService emailService;
     private final KimEduardOrderRepository orderRepository;
     private final KimEduardCartService cartService;
     private final KimEduardUserService userService;
@@ -105,6 +105,8 @@ public class KimEduardOrderService {
 
         cart.getItems().clear();
         cartRepository.save(cart);
+
+        emailService.sendOrderSuccessEmail(user, savedOrder);
 
         return orderMapper.toResponse(savedOrder);
     }

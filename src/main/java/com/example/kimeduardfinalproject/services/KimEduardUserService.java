@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class KimEduardUserService {
-
+    private final KimEduardEmailService emailService;
     private final KimEduardUserRepository userRepository;
     private final KimEduardUserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -82,6 +82,8 @@ public class KimEduardUserService {
         user.setCart(cart);
 
         KimEduardUser saved = userRepository.save(user);
+
+        emailService.sendRegistrationEmail(saved.getEmail());
 
         return userMapper.toResponse(saved);
     }
