@@ -19,4 +19,5 @@ public class KimEduardProductResponseDTO {
     private Boolean active;
     private Boolean deleted;
     private LocalDateTime createdAt;
+    private String imageUrl;
 }

@@ -45,6 +45,9 @@ public class KimEduardProduct {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(length = 500)
+    private String imageFileName;
+
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<KimEduardCartItem> cartItems = new ArrayList<>();

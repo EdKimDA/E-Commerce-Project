@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class KimEduardProductMapper {
     public KimEduardProductResponseDTO toResponse(KimEduardProduct product) {
+        String imageUrl = product.getImageFileName() != null
+                ? "/api/products/" + product.getId() + "/image"
+                : null;
+
         return new KimEduardProductResponseDTO(
                 product.getId(),
                 product.getName(),
@@ -15,7 +19,8 @@ public class KimEduardProductMapper {
                 product.getStockQuantity(),
                 product.getActive(),
                 product.getDeleted(),
-                product.getCreatedAt()
+                product.getCreatedAt(),
+                imageUrl
         );
     }
 }

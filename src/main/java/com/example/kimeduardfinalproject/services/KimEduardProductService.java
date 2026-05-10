@@ -1,6 +1,5 @@
 package com.example.kimeduardfinalproject.services;
 
-
 import com.example.kimeduardfinalproject.dto.requests.KimEduardProductRequestDTO;
 import com.example.kimeduardfinalproject.dto.responses.KimEduardPageResponseDTO;
 import com.example.kimeduardfinalproject.dto.responses.KimEduardProductResponseDTO;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ public class KimEduardProductService {
 
     private final KimEduardProductRepository productRepository;
     private final KimEduardProductMapper productMapper;
+    private final KimEduardFileStorageService fileStorageService;
 
     public KimEduardProductResponseDTO create(KimEduardProductRequestDTO dto) {
         KimEduardProduct product = new KimEduardProduct();
@@ -135,4 +136,41 @@ public class KimEduardProductService {
 
         return product;
     }
+
+    @Transactional
+    public KimEduardProductResponseDTO uploadProductImage(Long productId, MultipartFile file) {
+        KimEduardProduct product = findEntityById(productId);
+
+        if (product.getImageFileName() != null) {
+            fileStorageService.deleteFile(product.getImageFileName());
+        }
+
+        String fileName = fileStorageService.saveFile(file);
+
+        product.setImageFileName(fileName);
+
+        KimEduardProduct saved = productRepository.save(product);
+
+        return productMapper.toResponse(saved);
+    }
+
+    @Transactional
+    public void deleteProductImage(Long productId) {
+        KimEduardProduct product = findEntityById(productId);
+
+        if (product.getImageFileName() != null) {
+            fileStorageService.deleteFile(product.getImageFileName());
+            product.setImageFileName(null);
+            productRepository.save(product);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public KimEduardProduct getProductForImage(Long productId) {
+        return findActiveProductById(productId);
+    }
+
+
+
+
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,5 +46,18 @@ public class KimEduardAdminProductController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.softDelete(id);
+    }
+
+    @PostMapping("/{id}/image")
+    public KimEduardProductResponseDTO uploadProductImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return productService.uploadProductImage(id, file);
+    }
+
+    @DeleteMapping("/{id}/image")
+    public void deleteProductImage(@PathVariable Long id) {
+        productService.deleteProductImage(id);
     }
 }

@@ -5,12 +5,18 @@ import com.example.kimeduardfinalproject.dto.responses.KimEduardProductResponseD
 import com.example.kimeduardfinalproject.services.KimEduardProductService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import com.example.kimeduardfinalproject.entities.KimEduardProduct;
+import com.example.kimeduardfinalproject.services.KimEduardFileStorageService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 @Tag(
         name = "Products",
@@ -20,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class KimEduardProductController {
-
+    private final KimEduardFileStorageService fileStorageService;
     private final KimEduardProductService productService;
 
     @Operation(
@@ -66,5 +72,24 @@ public class KimEduardProductController {
     @GetMapping("/search")
     public List<KimEduardProductResponseDTO> search(@RequestParam String name) {
         return productService.searchByName(name);
+    }
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<Resource> downloadProductImage(@PathVariable Long id) {
+        KimEduardProduct product = productService.getProductForImage(id);
+
+        if (product.getImageFileName() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = fileStorageService.loadFile(product.getImageFileName());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + product.getImageFileName() + "\""
+                )
+                .body(resource);
     }
 }

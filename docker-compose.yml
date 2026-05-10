@@ -20,6 +20,8 @@ services:
       - db
     ports:
       - "8080:8080"
+    volumes:
+      - ecommerce_uploads:/app/uploads
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecommerce_db
@@ -34,3 +36,4 @@ services:
 
 volumes:
   ecommerce_postgres_data:
+  ecommerce_uploads:
